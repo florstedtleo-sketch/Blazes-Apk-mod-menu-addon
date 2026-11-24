@@ -617,6 +617,11 @@ static void MenuRebuild();
 static void SkyPicked();
 static int LockTarget(Vector3 from);
 static int LockTargetPersist(Vector3 from, bool gripHeld);
+static void FlingGunAim(Vector3 start, Vector3 dir);
+static void SkyboxRestore();
+static int g_stayTarget = -1;
+static bool g_stayGripPrev = false;
+static std::deque<MenuItem> g_eggItems;
 static void TextDefault();
 static void TextRed();
 static void TextWhite();
@@ -6744,7 +6749,6 @@ static bool EggColorsFor(const char *mob, const char **primary, const char **sec
         if (!strcmp(e.mob, mob)) { *primary = e.primary; *secondary = e.secondary; return true; }
     return false;
 }
-static std::deque<MenuItem> g_eggItems;
 static bool g_eggInit = false;
 static void SpawnEgg(const char *mob) {
     Il2CppObject *head = g_head.get();
@@ -8472,8 +8476,6 @@ static void PresetDelete() {
 
 // ---- Stay Locked: once a gun that affects other players picks a target, it keeps that target
 // (instead of re-picking the closest every frame) until you let go of the grip. ----
-static int g_stayTarget = -1;
-static bool g_stayGripPrev = false;
 static int LockTargetPersist(Vector3 from, bool gripHeld) {
     if (!f_stayLocked) return LockTarget(from);
     if (!gripHeld) { g_stayTarget = -1; g_stayGripPrev = false; return LockTarget(from); }
