@@ -621,7 +621,9 @@ static void FlingGunAim(Vector3 start, Vector3 dir);
 static void SkyboxRestore();
 static int g_stayTarget = -1;
 static bool g_stayGripPrev = false;
-static std::deque<MenuItem> g_eggItems;
+static void Radio(bool **flags, bool *prev, int n);
+static const char *FlingName(int i);
+static void EggEnsure();
 static void TextDefault();
 static void TextRed();
 static void TextWhite();
@@ -968,6 +970,7 @@ static MenuItem g_items[] = {
     {FUN, "Air Swim", TOGGLE, MAIN, &f_airSwim},
 };
 static constexpr int kItems = sizeof(g_items) / sizeof(g_items[0]);
+static std::deque<MenuItem> g_eggItems;
 static MenuItem g_returnItem = {ENABLED, "Exit Enabled Mods", OPEN, MAIN};
 
 // Tooltips, shown under the menu while your finger is on a button (like ii's).
